@@ -20,3 +20,11 @@ progress.
 ● ATTENDANCE: This functionality allows teachers to track student attendance by feeding attendance details manually or can be done by submodule attendance management based on face recognition.
 ● GRADES: This functionality allows teachers to input and track student grades, as well as 
 generate reports and transcripts. Here Admin has privilege to upload a spreadsheet of marks as well.
+
+<img width="933" alt="Screenshot 2023-03-12 211029" src="https://user-images.githubusercontent.com/114164125/224556119-9e734c2c-fc0f-4a30-852c-578ad2df604e.png">
+<img width="932" alt="Screenshot 2023-03-12 211106" src="https://user-images.githubusercontent.com/114164125/224556123-167170f8-19ad-4a5e-87ce-9401f8bdc206.png">
+<img width="933" alt="Screenshot 2023-03-12 211137" src="https://user-images.githubusercontent.com/114164125/224556130-2951d55c-23a8-4483-9e89-e6015f097538.png">
+<img width="920" alt="Screenshot 2023-03-12 211254" src="https://user-images.githubusercontent.com/114164125/224556133-c0733530-2238-494e-83f7-9a7892bcf094.png">
+<img width="901" alt="Screenshot 2023-03-12 211313" src="https://user-images.githubusercontent.com/114164125/224556148-830da048-3f99-4678-8539-d8f6f0b81144.png">
+
+<img width="892" alt="Screenshot 2023-03-12 211956" src="https://user-images.githubusercontent.com/114164125/224556225-5eeaa8d1-8dfd-413d-aa47-474d8ab7e8ba.png">
