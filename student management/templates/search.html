@@ -1,12 +1,39 @@
-{% extends 'base.html' %}
-{% block title %}
-Search
-{% endblock title %}
+<!DOCTYPE html>
+<html>
 
 
 
+<style>
+  .att{
+    color: rgb(169, 19, 29);
+  }
+
+  
+.dfd {
+  border:1px sospand black;
+}
+.bd{
+  background-color: rgb(7, 10, 28);
+  background-image: url(/static/images/bckg2.jpg);
+  background-repeat: no-repeat;
+ background-size: 75cm;
+}
+.u{
+  color: #e1dada;
+}
+span{
+  color: rgb(226, 185, 19);
+}
+label{
+  color: red;
+}
+</style>
+
+<body class="bd">
+  
+  {% extends 'base.html' %}
 {% block body %}
- <h3 class="text-center"><span>Search Your Details</span> </h3>
+ <h3 class="text-center"><span>Search student Details</span> </h3>
   
 {% with messages=get_flashed_messages(with_categories=true) %}
 {% if messages %}
@@ -14,7 +41,7 @@ Search
 
 <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
     {{message}}
-
+    
 
 </div>
   {% endfor %}
@@ -32,7 +59,7 @@ Search
 
 <div class="form-group">
 <label for="attendance">Enter Your Roll Number</label>
-<input type="text" class="form-control" name="roll" id="roll" placeholder="Use Small Letter">
+<input type="text" class="form-control" name="rollno" id="rollno" placeholder="Use Small Letter">
 </div>
 <br>
 
@@ -44,24 +71,102 @@ Search
 </div>
 
 
+
 <div class="col-md-8">
 {% if bio %}
-<br>
-<h3>Your Details</h3>
- <hr>
- <li>Roll No : {{bio.rollno}}</li>
 
- <li>Name    : {{bio.sname}}</li>
-  <li>Sem   : {{bio.sem}}</li>
-  <li>Gender   : {{bio.gender}}</li>
-  <li>Branch  : {{bio.branch}}</li>
-  <li>Email  : {{bio.email}}</li>
-  <li>Number  : {{bio.number}}</li>
-  <li>Address  : {{bio.address}}</li>
-  <hr>
-  <h3>Attendance Status</h3>
-  <hr>
-  <li>Attendance : {{attend.attendance}}</li>
+<br>
+<h3 class="att">Student Details</h3>
+ <hr class="u">
+ 
+ <span>Roll No : {{bio.rollno}}</span><br>
+ <img src="{{ url_for('get_image', rollno=bio.rollno) }}" alt="Image" width="130" height="130" style="position: absolute; top: 850px; left: 1000px;">
+ 
+ <span>Name    : {{bio.sname}}</span><br>
+  <span>Sem   : {{bio.sem}}</span><br>
+  <span>Gender   : {{bio.gender}}</span><br>
+  <span>Branch  : {{bio.branch}}</span><br>
+  <span>Email  : {{bio.email}}</span><br>
+  <span>Number  : {{bio.number}}</span><br>
+  <span>Address  : {{bio.address}}</span>
+  <br>
+  {% if cns %}
+  {% for a in cns %}
+  <span>Counselor:{{a.name}}</span><br>
+  {% endfor %}
+  {% endif %}
+  <hr class="u">
+  <h3 class="att">Attendance Status</h3>
+  <hr class="u">
+  <table   border="2" 
+  style=" width:5% ;background-color: rgba(82, 206, 206, 0.909) ; " class="table" >
+    <th  style="color:rgb(6, 10, 9)">COURSE</th>
+    {% for a in attend %}
+        
+    <th >{{a.course}}</th>
+    
+    {% endfor %}
+      <tbody>
+        <th style="color:rgb(2, 2, 2)">PERCENTAGE</th>
+        {% for a in attend %}
+        {% if a.attendance>= 75 %}
+          <th style="color:green">{{a.attendance}}%</th>
+          {% else %}
+          <th style="color:rgb(208, 35, 19)">{{a.attendance}}%</th>
+        {% endif %}
+    {% endfor %}
+      </tbody>
+    </table>
+
+ <hr class="u">
+ <h3 class="att">Enrollment</h3>
+  <hr class="u">
+  <table   border="2" 
+  style=" width:5% ;background-color: rgb(155, 141, 8) ; " class="table" >
+    <th style="color:rgb(15, 139, 13)">COURSE</th>
+    <th style="color:rgb(15, 139, 13)">STAFFID</th>
+    {% for e in query1 %}
+    <tr>
+    <th style="color:rgb(54, 47, 160)">{{e.course}} </th>
+     <th style="color:rgb(25, 22, 26)">{{e.staffid}}</th>
+    </tr>
+      {% endfor %} 
+   
+  </table>
+  <hr class="u">
+ <h3 class="att">Marks</h3>
+  <hr class="u">
+  
+    
+   <br>
+   <table   border="2" 
+    style=" width:5% ;background-color: rgb(39, 190, 177) ; " class="table" >
+    <th  style="color:rgb(6, 10, 9)">COURSE</th>
+    {% for e in grad %}
+    <th style="color:rgb(10, 9, 10)">{{e.coursecode}}</th>
+    {% endfor %} 
+    <tbody>
+      
+      {% for i in range(1, 4) %} 
+      <tr>  
+      <th  style="color:rgb(6, 10, 9)">{{i}}</th>
+     
+    {% for e in grade  %}
+    
+    {% if e.marks>= 20 and e.tid==i%}
+    <th style="color:rgb(37, 147, 15)">{{e.marks}}</th>
+    {% elif  e.marks<20  and  e.tid==i %}
+    <th style="color:rgb(123, 10, 10)">{{e.marks}}</th>
+    {% endif %}
+    
+    {% endfor %} 
+  </tr>
+    {% endfor %}
+  </tbody>
+   </table>
+   
+  
+
 <br><br>
 {% else %}
 No such results
@@ -73,3 +178,5 @@ No such results
 
 
 {% endblock body %}
+</body>
+</html>

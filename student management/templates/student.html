@@ -1,10 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<style>
+  .att{
+    color: rgb(169, 19, 29);
+  }
+
+  
+.dfd {
+  border:1px sospand black;
+}
+.bd{
+  background-color: rgb(7, 10, 28);
+  background-image: url(/static/images/bckg2.jpg);
+  background-repeat: no-repeat;
+ background-size: 60cm;
+}
+.u{
+  color: #e1dada;
+}
+span{
+  color: rgb(226, 185, 19);
+}
+label{
+  color: red;
+}
+</style>
+
+
+
+
+<body class="bd">
+  
+
 {% extends 'base.html' %}
-{% block title %}
-Add Students
-{% endblock title %}
-
-
-
 {% block body %}
  <h3 class="text-center"><span>Add Student Details</span> </h3>
   
@@ -28,23 +59,23 @@ Add Students
 <div class="col-md-4"></div>
 <div class="col-md-4">
 
-<form action="/addstudent" method="post">
+<form action="/addstudent" method="post" enctype="multipart/form-data">
 <div class="form-group">
 
-<label for="rollno">Roll Number</label>
-<input type="text" class="form-control" name="rollno" id="rollno">
+<label for="rollno">USN</label>
+<input type="text" class="form-control" name="rollno" id="rollno" pattern="(1RV)((1[9-9]|[2-9][0-3]))((?=.*[A-Z]).{2})((?=.*[0-9]).{3})">
 </div>
 <br>
 <div class="form-group">
 
 <label for="sname">Student Name</label>
-<input type="text" class="form-control" name="sname" id="sname">
+<input type="text" class="form-control" name="sname" id="sname" pattern="^[A-Za-z]+$" required>
 </div>
 <br>
 <div class="form-group">
 
 <label for="sem">Sem</label>
-<input type="number" class="form-control" name="sem" id="sem">
+<input type="number" class="form-control" name="sem" id="sem" min="5" max="5">
 </div>
 <br>
 <div class="form-group">                          
@@ -62,7 +93,7 @@ Add Students
 <select class="form-control" id="branch" name="branch"  required>
         <option selected>Select Branch</option>
         {% for d in dept  %}
-        <option value="{{d.branch}}">{{d.branch}}</option>
+        <option value="{{d.cid}}">{{d.cid}}</option>
         {% endfor %}
       </select>
  </div>
@@ -70,20 +101,38 @@ Add Students
 <div class="form-group">
 
 <label for="email">Email</label>
-<input type="email" class="form-control" name="email" id="email">
+<input type="email" class="form-control" name="email" id="email" pattern="((?=.*[a-z]).{1,})(.)(cs|bt|is|ee|ec|et|tc|im|me|cv|as)((1[9-9]|[2-9][0-3]))(@rvce.edu.in)">
 </div>
 <br>
 <div class="form-group">
 <label for="num">Phone Number</label>
-<input type="number" class="form-control" name="num" id="num">
+<input type="text" class="form-control" name="num" id="num" minlength="10" maxlength="10" >
 </div>
 <br>
+<div class="form-group">
+  <label for="num">DOB</label>
+  <input type="date" class="form-control" name="dob" id="dob">
+  </div>
+<br>
+<div class="form-group">                          
+  <select class="form-control" id="counsellor" name="counsellor"  required>
+          <option selected>Select counsellor</option>
+          {% for c in couns %}
+          <option value="{{c.staffid}}">{{c.staffid}}</option>
+          {% endfor %}
+        </select>
+   </div>
+ <br>
 
 <div class="form-group">
 <label for="address">Address</label>
 <textarea class="form-control" name="address" id="address"></textarea>
 </div>
 <br>
+<label for="file">Add image:</label>
+		<input type="file" name="file" id="file" required><br><br>
+ 
+ 
   
   <button type="submit" class="btn btn-danger btn-sm btn-block">Add Record</button>
 </form>
@@ -99,3 +148,5 @@ Add Students
 
 
 {% endblock body %}
+</body>
+</html>

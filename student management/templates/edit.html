@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,7 +11,21 @@
 
     <title>Edit</title>
   </head>
-<body class="bg-danger">
+  <style>
+    .bd{
+  background-color: rgb(7, 10, 28);
+  background-image: url(/static/images/bckg2.jpg);
+  background-repeat: no-repeat;
+ background-size: 49cm;
+}
+span{
+  color: rgb(226, 185, 19);
+}
+label{
+  color: red;
+}
+  </style>
+<body class="bd">
 
 
  <h3 class="text-center"><span>Edit Student Details</span> </h3>
@@ -35,7 +50,7 @@
 <div class="col-md-4"></div>
 <div class="col-md-4">
 
-<form action="/edit/{{posts.id}}" method="post">
+<form action="/edit/{{posts.rollno}}" method="post">
 <div class="form-group">
 
 <label for="rollno">Roll Number</label>
@@ -91,13 +106,19 @@
 <input type="text"class="form-control" name="address" id="address" value={{posts.address}}>
 </div>
 <br>
-  
+
+
+<div class="form-group">
+ <label for="counselnum">Counselor</label>
+ <input type="text" class="form-control" name="counsellor" id="counsellor" value={{posts.counsellor}}>
+</div>
   <button type="submit" class="btn btn-light btn-sm btn-block">Submit Record</button>
 </form>
 <br>
 <br>
 
 </div>
+
 
 <div class="col-md-4"></div>
 

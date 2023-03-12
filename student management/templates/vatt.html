@@ -29,16 +29,14 @@ label{
 }
 </style>
 
-{% block title %}
-Add Department
-{% endblock title %}
+
 
 <body class="bd">
   
 
-{% extends 'base.html' %}
+{% extends 'base1.html' %}
 {% block body %}
- <h3 class="text-center bg-danger text-white"><span>Add Department</span> </h3>
+ <h3 class="text-center"><span>Add Attendance Details</span> </h3>
   
 {% with messages=get_flashed_messages(with_categories=true) %}
 {% if messages %}
@@ -59,23 +57,24 @@ Add Department
 
 <div class="col-md-4"></div>
 <div class="col-md-4">
+    <form action="/attendance" method="post">
+        <br>
+<div class="form-group">                          
+  <select class="form-control" id="coursecode" name="coursecode"  required>
+          <option selected>Select Course</option>
+          {% for d in course %}
+          <option value="{{d.coursecode}}">{{d.coursecode}}</option>
+          {% endfor %}
+        </select>
+   </div>
+   <br>
+   <div>
+        <button class="btn btn-danger btn-sm btn-block" name="att">Add Attendance</button>
+    
+      <button class="btn btn-danger btn-sm btn-block" name="close">stop</button>
+    </div>
+    </form>
 
-<form action="/department" method="post">
-
-
-<div class="form-group">
-<label for="dept">Enter Department Name</label>
-<input type="text" class="form-control" name="dept" id="dept">
-</div>
-<br>
-<div class="form-group">
-  <label for="dept">Enter Department ID</label>
-  <input type="text" class="form-control" name="cid" id="cid">
-  </div>
-  <br>
-  <button type="submit" class="btn btn-danger btn-sm btn-block">Add Department</button>
-</form>
-<br>
 <br>
 
 </div>

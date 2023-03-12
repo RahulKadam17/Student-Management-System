@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 11, 2021 at 01:03 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.2.29
+-- Generation Time: Feb 11, 2023 at 02:14 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -23,51 +23,109 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `attendence`
---
-
-CREATE TABLE `attendence` (
-  `aid` int(11) NOT NULL,
-  `rollno` varchar(20) NOT NULL,
-  `attendance` int(100) NOT NULL
+CREATE TABLE `trig` (
+  `tid` int(11) NOT NULL,
+  `rollno` varchar(50) NOT NULL,
+  `action` varchar(50) NOT NULL,
+  `timestamp` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `attendence`
+-- Dumping data for table `trig`
 --
 
-INSERT INTO `attendence` (`aid`, `rollno`, `attendance`) VALUES
-(6, '1ve17cs012', 98);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `department`
---
+
 
 CREATE TABLE `department` (
-  `cid` int(11) NOT NULL,
+  `cid` varchar(50) NOT NULL,
   `branch` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `department`
+  ADD PRIMARY KEY (`cid`);
 
 --
 -- Dumping data for table `department`
 --
 
 INSERT INTO `department` (`cid`, `branch`) VALUES
-(2, 'Information Science'),
-(3, 'Electronic and Communication'),
-(4, 'Electrical & Electronic'),
-(5, 'Civil '),
-(7, 'computer science'),
-(8, 'IOT');
+('ISE', 'Information Science'),
+('EC', 'Electronic and Communication'),
+('EEE', 'Electrical & Electronic'),
+('CV', 'Civil'),
+('CSE', 'Computer Science'),
+('BT', 'Biotechnology'),
+('ME', 'Mechanical'),
+('ET', 'Electronics and Telecommunication'),
+('CH', 'Chemical'),
+('IEM', 'Industrial Engineering and Management'),
+('EI', 'Electronic and Instrumentation');
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `student`
---
+
+CREATE TABLE `course` (
+  `coursecode` varchar(10) NOT NULL,
+   `coursename` varchar(50) NOT NULL,
+  `branch_id` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  
+  
+  ALTER TABLE `course`
+  ADD PRIMARY KEY (`coursecode`);
+
+
+ALTER TABLE `course` ADD CONSTRAINT `c1` FOREIGN KEY (`branch_id`) REFERENCES `department`(`cid`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+INSERT INTO `course` ( `coursecode`, `coursename`,`branch_id`) VALUES
+('18CS52', 'FAFL','CSE'),
+('18CS53', 'DBMS','CSE'),
+('18CS54', 'NPS','CSE'),
+('18IS55', 'SE','ISE'),
+('18G5B09', 'OR','IEM');
+
+
+-- --------------------------------------------------------
+
+CREATE TABLE `staff` (
+  `staffid` varchar(50) NOT NULL ,
+   `email` varchar(50) NOT NULL , 
+   `name` varchar(50) NOT NULL ,
+    `phone` varchar(50) NOT NULL , 
+    `specialization` varchar(50) NOT NULL , 
+    PRIMARY KEY (`staffid`)
+    ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `staff` ( `staffid`, `email`,`name`,`phone`,`specialization`) VALUES
+('1', 'abc@rvce.edu.in','xyz','99999991','A'),
+('2', 'xxy@rvce.edu.in','abc','998899991','B'),
+('3', 'bhy@rvce.edu.in','ayuy','998892991','C'),
+('4', 'bpj@rvce.edu.in','ay','998799991','D'),
+('10', 'jkl@rvce.edu.in','abcd','998666991','E');
+
+
+-- --------------------------------------------------------
+CREATE TABLE `teach` (
+  `tid` INT NOT NULL AUTO_INCREMENT ,
+   `course` varchar(50) NOT NULL , 
+   `staffid` varchar(50) NOT NULL , 
+   PRIMARY KEY (`tid`)) 
+   ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 ;
+    
+   ALTER TABLE `teach` ADD CONSTRAINT `t1` FOREIGN KEY (`course`) REFERENCES `course`(`coursecode`) ON DELETE CASCADE ON UPDATE RESTRICT;
+   ALTER TABLE `teach` ADD CONSTRAINT `t2` FOREIGN KEY (`staffid`) REFERENCES `staff`(`staffid`) ON DELETE CASCADE ON UPDATE RESTRICT;
+      
+  INSERT INTO `teach` (`course`,`staffid`) VALUES
+  ('18CS52', '1'),
+  ('18CS53', '2'),
+  ('18CS54', '3'),
+  ('18IS55', '4'),
+  ('18G5B09', '10');
+
+-- --------------------------------------------------------
+
 
 CREATE TABLE `student` (
   `id` int(11) NOT NULL,
@@ -78,9 +136,16 @@ CREATE TABLE `student` (
   `branch` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `number` varchar(12) NOT NULL,
-  `address` text NOT NULL
+  `address` text NOT NULL,
+  `counsellor` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+
+ALTER TABLE `student` ADD CONSTRAINT `s1` FOREIGN KEY (`branch`) REFERENCES `department`(`cid`) ON DELETE CASCADE ON UPDATE RESTRICT;
+ALTER TABLE `student` ADD CONSTRAINT `s2` FOREIGN KEY (`counsellor`) REFERENCES `staff`(`staffid`) ON DELETE CASCADE ON UPDATE RESTRICT;
+--ALTER TABLE `student`
+ -- MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 --
 -- Triggers `student`
 --
@@ -96,47 +161,87 @@ DELIMITER $$
 CREATE TRIGGER `UPDATE` AFTER UPDATE ON `student` FOR EACH ROW INSERT INTO trig VALUES(null,NEW.rollno,'STUDENT UPDATED',NOW())
 $$
 DELIMITER ;
-
+ALTER TABLE `student`
+  ADD PRIMARY KEY (`rollno`);
 -- --------------------------------------------------------
 
+
+
+CREATE TABLE `enrol`(
+  `eid` int(11) NOT NULL,
+  `rollno` varchar(10) NOT NULL,
+  `coursecode` varchar(10) NOT NULL
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `enrol`
+ ADD PRIMARY KEY(`eid`);
+
+ ALTER TABLE `enrol`
+  MODIFY `eid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+  ALTER TABLE `enrol` ADD CONSTRAINT `e1` FOREIGN KEY (`coursecode`) REFERENCES `course`(`coursecode`) ON DELETE CASCADE ON UPDATE RESTRICT;
+  ALTER TABLE `enrol` ADD CONSTRAINT `e2` FOREIGN KEY (`rollno`) REFERENCES `student`(`rollno`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+--  INSERT INTO `enrol` ( `eid`,`rollno`,`coursecode`) VALUES
+--  (1,'1rv20cs130','18cs42');
+
+
+
+-- --------------------------------------------------------
 --
--- Table structure for table `test`
+-- Table structure for table `attendence`
 --
 
-CREATE TABLE `test` (
-  `id` int(11) NOT NULL,
-  `name` varchar(52) NOT NULL,
-  `email` varchar(50) NOT NULL
+CREATE TABLE `attendence` (
+  `aid` int(11) NOT NULL,
+  `rollno` varchar(20) NOT NULL,
+  `course` varchar(20) NOT NULL,
+  `attendance` int(100) NOT NULL
+   
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+ALTER TABLE `attendence`
+  ADD PRIMARY KEY (`aid`);
+
+ALTER TABLE `attendence`
+  MODIFY `aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+  
+ALTER TABLE `attendence` ADD CONSTRAINT `at1` FOREIGN KEY (`course`) REFERENCES `course`(`coursecode`) ON DELETE CASCADE ON UPDATE RESTRICT;
+ALTER TABLE `attendence` ADD CONSTRAINT `at2` FOREIGN KEY (`rollno`) REFERENCES `student`(`rollno`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
 --
--- Dumping data for table `test`
+-- Dumping data for table `attendence`
 --
 
-INSERT INTO `test` (`id`, `name`, `email`) VALUES
-(1, 'aaa', 'aaa@gmail.com');
+
+-- INSERT INTO `attendence` (`aid`, `rollno`, `attendance`) VALUES
+-- (6, '1ve17cs012', 98);
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `trig`
---
 
-CREATE TABLE `trig` (
+
+-- Table structure for table `grade`
+--
+CREATE TABLE `grade`(
+  `gid` int(11) NOT NULL,
   `tid` int(11) NOT NULL,
-  `rollno` varchar(50) NOT NULL,
-  `action` varchar(50) NOT NULL,
-  `timestamp` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `rollno` varchar(10) NOT NULL,
+  `coursecode` varchar(10) NOT NULL,
+   `marks` int(11) NOT NULL
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `trig`
---
+ALTER TABLE `grade`
+ ADD PRIMARY KEY(`gid`);
 
-INSERT INTO `trig` (`tid`, `rollno`, `action`, `timestamp`) VALUES
-(7, '1ve17cs012', 'STUDENT INSERTED', '2021-01-10 19:19:56'),
-(8, '1ve17cs012', 'STUDENT UPDATED', '2021-01-10 19:20:31'),
-(9, '1ve17cs012', 'STUDENT DELETED', '2021-01-10 19:21:23');
+ALTER TABLE `grade`
+  MODIFY `gid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+ALTER TABLE `grade` ADD CONSTRAINT `g1` FOREIGN KEY (`rollno`) REFERENCES `student`(`rollno`) ON DELETE CASCADE ON UPDATE RESTRICT;
+ALTER TABLE `grade` ADD CONSTRAINT `g2` FOREIGN KEY (`coursecode`) REFERENCES `course`(`coursecode`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
 
 -- --------------------------------------------------------
 
@@ -151,40 +256,6 @@ CREATE TABLE `user` (
   `password` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `username`, `email`, `password`) VALUES
-(4, 'anees', 'anees@gmail.com', 'pbkdf2:sha256:150000$1CSLss89$ef995dfc48121768b2070bfbe7a568871cd56fac85ac7c95a1e645c8806146e9');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `attendence`
---
-ALTER TABLE `attendence`
-  ADD PRIMARY KEY (`aid`);
-
---
--- Indexes for table `department`
---
-ALTER TABLE `department`
-  ADD PRIMARY KEY (`cid`);
-
---
--- Indexes for table `student`
---
-ALTER TABLE `student`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `test`
---
-ALTER TABLE `test`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `trig`
@@ -198,45 +269,28 @@ ALTER TABLE `trig`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
+-- ALTER TABLE `enrol`
+--   ADD CONSTRAINT `usn` FOREIGN KEY (`usn`) REFERENCES `student`(`rollno`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
+
+ 
 --
 -- AUTO_INCREMENT for table `attendence`
 --
-ALTER TABLE `attendence`
-  MODIFY `aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
---
--- AUTO_INCREMENT for table `department`
---
-ALTER TABLE `department`
-  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+-- SELECT name FROM `staff` WHERE staffid IN( SELECT staffid FROM `teach` s WHERE s.course IN (SELECT sb.coursecode FROM `enrol` sb));
 
---
--- AUTO_INCREMENT for table `student`
---
-ALTER TABLE `student`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `test`
---
-ALTER TABLE `test`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `trig`
---
 ALTER TABLE `trig`
-  MODIFY `tid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `tid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

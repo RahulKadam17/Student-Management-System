@@ -1,44 +1,29 @@
-
 <!DOCTYPE html>
 <html>
 
-
-
+{% block title %}
+Enrol Students
+{% endblock title %}
 <style>
-  .att{
-    color: rgb(169, 19, 29);
-  }
-
-  
-.dfd {
-  border:1px sospand black;
-}
-.bd{
+  .bd{
   background-color: rgb(7, 10, 28);
   background-image: url(/static/images/bckg2.jpg);
   background-repeat: no-repeat;
- background-size:50cm;
+ background-size: 50cm;
 }
-.u{
-  color: #e1dada;
+.f1{
+  color: rgb(177, 27, 27);
 }
 span{
   color: rgb(226, 185, 19);
 }
-label{
-  color: red;
-}
 </style>
-{% block title %}
-Add Attendance
-{% endblock title %}
-
 <body class="bd">
   
 
 {% extends 'base.html' %}
 {% block body %}
- <h3 class="text-center"><span>Add Attendance Details</span> </h3>
+ <h3 class="text-center"><span>Select course for student</span> </h3>
   
 {% with messages=get_flashed_messages(with_categories=true) %}
 {% if messages %}
@@ -60,25 +45,26 @@ Add Attendance
 <div class="col-md-4"></div>
 <div class="col-md-4">
 
-<form action="/addattendance" method="post">
+<form action="/enrol" method="post">
 
+
+<label for="usn" class="f1">USN</label>
 <div class="form-group">                          
-<select class="form-control" id="rollno" name="rollno"  required>
-        <option selected>Select RollNo</option>
-        {% for r in query  %}
-        <option value="{{r.rollno}}">{{r.rollno}}</option>
-        {% endfor %}
-      </select>
- </div>
+  <select class="form-control" id="roolno" name="rollno"  required>
+          <option selected>select student</option>
+          {% for d in stud %}
+          <option value="{{d.rollno}}">{{d.rollno}}</option>
+          {% endfor %}
+        </select>
+   </div>
 <br>
-
-
-
 <div class="form-group">
-<label for="attendance">Attendance Percentage</label>
-<input type="number" class="form-control" name="attend" id="attend">
-</div>
 <br>
+ 
+
+   <br>
+   
+   
 <div class="form-group">                          
   <select class="form-control" id="coursecode" name="coursecode"  required>
           <option selected>Select Course</option>
@@ -88,8 +74,12 @@ Add Attendance
         </select>
    </div>
 <br>
-  <button type="submit" class="btn btn-danger btn-sm btn-block">Add Attendance</button>
+
+ <br>
+  
+  <button type="submit" class="btn btn-danger btn-sm btn-block">SUBMIT</button>
 </form>
+
 <br>
 <br>
 

@@ -38,35 +38,52 @@
         <a href="/" class="scrollto">S.M.S</a>
       </div>
 
-      
+      <nav id="nav-menu-container">
+        <ul class="nav-menu">
+          <li class="{% block home %}
+          {% endblock home %}"><a href="/">Home</a></li>
+         
+ <li><a href="/base">Admin</a></li>
+ <li><a href="/attendance">Student Biometric</a></li>
+ 
+ 
+          
+   
+
+    
+      </nav><!-- #nav-menu-container -->
     </div>
   </header><!-- End Header -->
 
   <!-- ======= Intro Section ======= -->
-  <section id="intro">
+ <section id="intro">
     <div class="intro-container" data-aos="zoom-in" data-aos-delay="100">
-    {% block content %}
- 
-{% endblock content %}
+      <h1 class="mb-4 pb-0">STUDENT MANAGEMENT SYSTEM </span> </h1>
+      <p class="mb-4 pb-0">DBMS Mini Project </p>
+      <p class="mb-4 pb-0">Done by Rahul Kadam, Rahul Maheswad, Roshan</p>
+      <a href="" class="about-btn scrollto">View More</a>
     </div>
   </section><!-- End Intro Section -->
+  <main id="main">
 
-<div class="main">
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer">
-    <div class="footer-top">
-      <div class="container">
-       
-    </div>
+  {% block body %}
+  
+{% with messages=get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
 
-    <div class="container">
-   
-      <div class="credits">
-      <br>
-      </div>
-    </div>
-  </footer><!-- End  Footer -->
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    {{message}}
+
+
+</div>
+
+
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+  {% endblock body %}
 
 
   <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
@@ -81,6 +98,7 @@
   <script src="static/assets/vendor/superfish/superfish.min.js"></script>
   <script src="static/assets/vendor/hoverIntent/hoverIntent.js"></script>
   <script src="static/assets/vendor/aos/aos.js"></script>
+  
 
   <!-- Template Main JS File -->
   <script src="static/assets/js/main.js"></script>
